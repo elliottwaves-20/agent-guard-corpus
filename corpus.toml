@@ -1,0 +1,41 @@
+# Expected verdicts for the malicious samples.
+# expect = "dangerous": a scanner (after any false-positive triage) must not judge it safe.
+# hard = true: the evidence is conclusive on its own (credential flow to a foreign host,
+# obfuscated execution); no triage step may downgrade it.
+
+version = 1
+
+[[sample]]
+id = "m1-exfil"
+expect = "dangerous"
+hard = true
+pattern = "credential files and secret env vars sent to a foreign host"
+evidence = ["scripts/tidy.py"]
+
+[[sample]]
+id = "m2-injection"
+expect = "dangerous"
+hard = false
+pattern = "hidden prompt injection in an HTML comment"
+evidence = ["SKILL.md"]
+
+[[sample]]
+id = "m3-curlsh"
+expect = "dangerous"
+hard = false
+pattern = "pipe-to-shell with sudo from a host unrelated to the stated tool"
+evidence = ["SKILL.md"]
+
+[[sample]]
+id = "m4-obfuscated"
+expect = "dangerous"
+hard = true
+pattern = "base64-encoded payload executed with exec"
+evidence = ["scripts/resize.py"]
+
+[[sample]]
+id = "m5-subtle"
+expect = "dangerous"
+hard = false
+pattern = "install from a foreign URL, whole environment passed to it"
+evidence = ["references/setup.md"]
